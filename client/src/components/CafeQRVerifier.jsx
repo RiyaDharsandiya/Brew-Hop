@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { QrReader } from "react-qr-reader";
+import QrScanner from "react-qr-scanner";
 import { toast } from "react-toastify";
 import LoadingCup from "../components/LoadingCup";
 import { useAuth } from "../context/UserAuthContext";
@@ -42,6 +42,24 @@ const CafeQRVerifier = ({ API_URL, token }) => {
     }
   };
 
+  const handleScan = (data) => {
+    if (data?.text || data) {
+      try {
+        const url = new URL(data?.text || data);
+        const code = url.pathname.split("/").pop();
+        setClaimCode(code);
+        setScanError("");
+      } catch (e) {
+        setScanError("Invalid QR format");
+      }
+    }
+  };
+
+  const handleError = (err) => {
+    console.error(err);
+    setScanError("Camera access denied or error in scanning.");
+  };
+
   return (
     <div className="p-6 bg-white rounded shadow-md max-w-md mx-auto mt-10 relative">
       {loading && (
@@ -54,22 +72,11 @@ const CafeQRVerifier = ({ API_URL, token }) => {
 
       {/* Webcam QR Scanner */}
       <div className="mb-4">
-        <QrReader
-          constraints={{ facingMode: "environment" }}
-          onResult={(result, error) => {
-            if (result?.text) {
-              try {
-                const url = new URL(result.text);
-                const code = url.pathname.split("/").pop(); // get code from /qr/<code>
-                setClaimCode(code);
-                setScanError(""); // Clear previous scan errors
-              } catch (e) {
-                setScanError("Invalid QR format");
-              }
-            }
-            if (error) setScanError(error?.message || "Scan error");
-          }}
-          containerStyle={{ width: "100%" }}
+        <QrScanner
+          delay={300}
+          onError={handleError}
+          onScan={handleScan}
+          style={{ width: "100%" }}
         />
         {scanError && <p className="text-sm text-red-500 mt-2">{scanError}</p>}
       </div>
