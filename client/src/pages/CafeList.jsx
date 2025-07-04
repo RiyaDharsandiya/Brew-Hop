@@ -11,7 +11,11 @@ import { toast } from "react-toastify";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const socket = io(API_URL);
+const socket = io(API_URL, {
+  transports: ["websocket"], // Avoid long-polling issues
+  withCredentials: true, // If you’re using cookies or auth
+});
+
 
 const CafeList = () => {
   const [loading, setLoading] = useState(true);
