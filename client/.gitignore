@@ -1,0 +1,16 @@
+# dependencies
+node_modules/
+
+# build
+dist/
+build/
+
+# environment variables
+.env
+.env.*
+
+# misc
+.DS_Store
+.vite
+.cache
+npm-debug.log*
