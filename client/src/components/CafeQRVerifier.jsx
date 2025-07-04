@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { QrReader } from "react-qr-reader";
+import { Html5QrcodeScanner } from "html5-qrcode";
 import { toast } from "react-toastify";
 import LoadingCup from "../components/LoadingCup";
 import { useAuth } from "../context/UserAuthContext";
@@ -10,7 +10,36 @@ const CafeQRVerifier = ({ API_URL, token }) => {
   const [result, setResult] = useState(null);
   const [scanError, setScanError] = useState("");
   const [loading, setLoading] = useState(false);
+  const qrRef = useRef(null);
   const { refreshUser } = useAuth();
+
+  useEffect(() => {
+    const scanner = new Html5QrcodeScanner("qr-reader", {
+      fps: 10,
+      qrbox: 250,
+    });
+
+    scanner.render(
+      (decodedText) => {
+        try {
+          const url = new URL(decodedText);
+          const code = url.pathname.split("/").pop(); // from /qr/<code>
+          setClaimCode(code);
+          setScanError("");
+        } catch (e) {
+          setScanError("Invalid QR format");
+        }
+      },
+      (error) => {
+        setScanError(error || "Scan error");
+      }
+    );
+
+    // Cleanup
+    return () => {
+      scanner.clear().catch(console.error);
+    };
+  }, []);
 
   const handleVerify = async () => {
     if (!claimCode) {
@@ -28,7 +57,6 @@ const CafeQRVerifier = ({ API_URL, token }) => {
         user: res.data.user,
         message: res.data.message,
       });
-      setScanError("");
       toast.success("Verification successful!");
       await refreshUser();
     } catch (err) {
@@ -52,27 +80,10 @@ const CafeQRVerifier = ({ API_URL, token }) => {
 
       <h2 className="text-xl font-semibold mb-4 text-center">Verify QR Claim</h2>
 
-      {/* Webcam QR Scanner */}
-      <div className="mb-4">
-        <QrReader
-          constraints={{ facingMode: "environment" }}
-          onResult={(result, error) => {
-            if (result?.text) {
-              try {
-                const url = new URL(result.text);
-                const code = url.pathname.split("/").pop(); // get code from /qr/<code>
-                setClaimCode(code);
-                setScanError(""); // Clear previous scan errors
-              } catch (e) {
-                setScanError("Invalid QR format");
-              }
-            }
-            if (error) setScanError(error?.message || "Scan error");
-          }}
-          containerStyle={{ width: "100%" }}
-        />
-        {scanError && <p className="text-sm text-red-500 mt-2">{scanError}</p>}
-      </div>
+      {/* QR Scanner */}
+      <div id="qr-reader" ref={qrRef} className="mb-4" />
+
+      {scanError && <p className="text-sm text-red-500 mt-2">{scanError}</p>}
 
       {/* Manual Input */}
       <input
