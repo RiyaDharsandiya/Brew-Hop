@@ -223,15 +223,6 @@ const planIsNotPurchased = (plan) => {
       socket.off("claim-redeemed");
     };
   }, [user._id]);
-  useEffect(() => {
-    if (window.innerWidth <= 768) { // mobile check
-      const interval = setInterval(() => {
-        refreshUser();
-      }, 2000); // every 30 seconds
-  
-      return () => clearInterval(interval);
-    }
-  }, []);
   
 
   if (loading) return <LoadingCup />;
