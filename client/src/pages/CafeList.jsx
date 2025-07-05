@@ -64,12 +64,17 @@ const CafeList = () => {
   );
 };
   
-  const planIsExpiredOrNotPurchased = (plan) => {
-    if (!plan) return true; // No plan at all for this location
-    if (!plan.planPurchased) return true; // Not purchased
-    if (!plan.planExpiryDate) return true; // No expiry date set
-    return new Date(plan.planExpiryDate) <= new Date(); // Expired
-  };
+const planIsExpired = (plan) => {
+  if (!plan) return false; // No plan, so not expired (handled by not purchased)
+  if (!plan.planExpiryDate) return false; // No expiry date, treat as not expired
+  return new Date(plan.planExpiryDate) <= new Date();
+};
+
+const planIsNotPurchased = (plan) => {
+  if (!plan) return true; // No plan at all for this location
+  return !plan.planPurchased;
+};
+
   
   const planIsActive = (plan) => {
     return plan && plan.planPurchased && new Date(plan.planExpiryDate) > new Date();
@@ -222,13 +227,13 @@ const CafeList = () => {
   if (loading) return <LoadingCup />;
 
   return (
-    <div className="relative min-h-screen">
-      <div className="absolute inset-0">
-        <img src={cafeBg} alt="Café background" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-black/30" />
-      </div>
+    <div className="relative min-h-screen flex flex-col bg-fixed">
+     <div className="fixed inset-0 -z-10">
+    <img src={cafeBg} alt="Café background" className="w-full h-full object-cover" />
+    <div className="absolute inset-0 bg-black/30" />
+    </div>
 
-      <div className="relative z-10 min-h-screen p-6">
+    <div className="z-10 p-6">
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
           <h1 className="text-3xl font-bold text-white text-center sm:text-left">
             Explore Partner Cafés ☕
@@ -288,12 +293,17 @@ const CafeList = () => {
       </div>
 
       {/* Plan expired or not purchased */}
-        {selectedLocation && user.role === "user" && planIsExpiredOrNotPurchased(plan) && (
-          <div className="mb-6 p-4 bg-red-100 text-red-700 rounded text-center font-semibold">
-            Your plan for <strong>{selectedLocation}</strong> has expired or is not active. Please renew to claim cafes here.
-          </div>
-        )}
+      {selectedLocation && user.role === "user" && planIsNotPurchased(plan) && (
+        <div className="mb-6 p-4 bg-green-200 text-green-700 rounded text-center font-semibold">
+          You have not purchased a plan for <strong>{selectedLocation}</strong>. Please purchase to claim cafes here.
+        </div>
+      )}
 
+      {selectedLocation && user.role === "user" && !planIsNotPurchased(plan) && planIsExpired(plan) && (
+        <div className="mb-6 p-4 bg-red-100 text-red-700 rounded text-center font-semibold">
+          Your plan for <strong>{selectedLocation}</strong> has expired. Please renew to claim cafes here.
+        </div>
+      )}
         {/* All beverages claimed */}
         {selectedLocation && user.role === "user" && allBeveragesClaimed(plan) && (
           <div className="mb-6 p-4 bg-red-100 text-red-700 rounded text-center font-semibold">
@@ -391,7 +401,17 @@ const CafeList = () => {
           </div>
         </div>
       )}
-    </div>
+     <div className="relative z-10 max-w-4xl mx-auto mt-12 mb-8 p-3 bg-white bg-opacity-90 rounded-lg shadow-md text-gray-800">
+    <h3 className="text-xl font-semibold mb-4">Terms and Conditions:</h3>
+    <ol className="list-decimal list-inside space-y-2 text-sm sm:text-base">
+      <li>Redeemable only on weekdays (Monday to Friday).</li>
+      <li>Redeemable only before 6pm on Weekdays.</li>
+      <li>The purchaser of the passport should only redeem.</li>
+      <li>Passport expires every 1 month from the date of purchase and time.</li>
+      <li>Merchants reserve the right to final say.</li>
+    </ol>
+  </div>
+</div>
   );
 };
 

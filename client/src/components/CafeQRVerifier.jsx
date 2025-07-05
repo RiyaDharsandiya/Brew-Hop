@@ -13,7 +13,10 @@ const CafeQRVerifier = ({ API_URL, token }) => {
   const qrRef = useRef(null);
   const { refreshUser } = useAuth();
 
-  useEffect(() => {
+  const scannerRef = useRef(null);
+
+useEffect(() => {
+  if (!scannerRef.current) {
     const scanner = new Html5QrcodeScanner("qr-reader", {
       fps: 10,
       qrbox: 250,
@@ -23,23 +26,34 @@ const CafeQRVerifier = ({ API_URL, token }) => {
       (decodedText) => {
         try {
           const url = new URL(decodedText);
-          const code = url.pathname.split("/").pop(); // from /qr/<code>
+          const code = url.pathname.split("/").pop();
           setClaimCode(code);
           setScanError("");
         } catch (e) {
-          setScanError("Invalid QR format");
+          setScanError("Invalid QR format. Please scan a valid code.");
         }
       },
-      (error) => {
-        setScanError(error || "Scan error");
+      (errorMessage) => {
+        if (errorMessage.includes("No barcode or QR code detected")) {
+          setScanError("No QR code detected. Hold the code steady in the frame.");
+        } else if (errorMessage.includes("parse")) {
+          setScanError("Unable to read QR code. Try again.");
+        } else {
+          setScanError("Scan error. Try repositioning the camera.");
+        }
       }
     );
 
-    // Cleanup
-    return () => {
-      scanner.clear().catch(console.error);
-    };
-  }, []);
+    scannerRef.current = scanner;
+  }
+
+  return () => {
+    if (scannerRef.current) {
+      scannerRef.current.clear().catch(console.error);
+      scannerRef.current = null;
+    }
+  };
+}, []);
 
   const handleVerify = async () => {
     if (!claimCode) {

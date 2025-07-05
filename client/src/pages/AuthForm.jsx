@@ -4,7 +4,7 @@ import { useAuth } from "../context/UserAuthContext";
 import authCafe from "../assets/cover.jpeg";
 import { useSearchParams } from "react-router-dom";
 import { auth, googleProvider } from "../firebase/firebase";
-import { signInWithPopup } from "firebase/auth";
+import { signInWithPopup,setPersistence, browserLocalPersistence, browserSessionPersistence,  } from "firebase/auth";
 import LoadingCup from "../components/LoadingCup";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -29,24 +29,32 @@ const AuthForm = () => {
   const handleLoginChange = (e) => {
     setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
   };
-
   const handleSignupChange = (e) => {
     setSignupForm({ ...signupForm, [e.target.name]: e.target.value });
-  };
+  };  
   
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       toast.success("Login successful!"); 
-      const res = await axios.post(`${API_URL}/api/auth/login`, loginForm);
-      loginUser(res.data.user, res.data.token);
+      const res = await axios.post(`${API_URL}/api/auth/login`, { ...loginForm });
+      // Store token in localStorage if rememberMe is checked, else in sessionStorage
+      if (loginForm.rememberMe) {
+        localStorage.setItem('token', res.data.token);
+        localStorage.setItem('user', JSON.stringify(res.data.user));
+      } else {
+        sessionStorage.setItem('token', res.data.token);
+        sessionStorage.setItem('user', JSON.stringify(res.data.user));
+      }
+      loginUser(res.data.user, res.data.token, loginForm.rememberMe); 
     } catch (err) {
-      toast.error("Login failed. Please check your credentials.");
+      toast.error("Login failed. Please check your credentials or Sign Up if you haven't done yet");
     } finally {
       setLoading(false);
     }
   };
+  
 
   const handleSignupSubmit = async (e) => {
     e.preventDefault();
@@ -82,15 +90,17 @@ const AuthForm = () => {
   const handleGoogleSignIn = async () => {
     setLoading(true);
     try {
+      await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
       const idToken = await user.getIdToken();
       const res = await axios.post(`${API_URL}/api/auth/firebase`, {
         token: idToken,
         name: user.displayName,
-        email: user.email
+        email: user.email,
+        rememberMe: loginForm.rememberMe 
       });
-      loginUser(res.data.user, res.data.token);
+      loginUser(res.data.user, res.data.token, loginForm.rememberMe);
       toast.success("Google login successful!");
     } catch (err) {
       toast.error("Google login failed. Please try again.");
@@ -98,6 +108,7 @@ const AuthForm = () => {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-[#f8f5f0] px-4">
@@ -177,6 +188,16 @@ const AuthForm = () => {
                 placeholder="Password"
                 className="w-full px-4 py-2 rounded bg-white text-black border border-gray-600 focus:outline-none"
               />
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="rememberMe"
+                  checked={loginForm.rememberMe || false}
+                  onChange={e => setLoginForm({ ...loginForm, rememberMe: e.target.checked })}
+                  className="mr-2"
+                />
+                <label htmlFor="rememberMe" className="text-sm">Remember Me</label>
+              </div>
               <button
                 type="submit"
                 className="w-full bg-[#f0a500] text-white py-2 rounded hover:bg-yellow-600 transition"

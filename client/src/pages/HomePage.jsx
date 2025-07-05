@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import cafeBanner from "../assets/cafe-banner.jpeg";
 import { useAuth } from "../context/UserAuthContext";
 import { useNavigate } from "react-router-dom";
 import AutoScrollCafes from "../components/AutoScrollPartners";
+import { FaWhatsapp } from "react-icons/fa";
 
 const Home = () => {
   const { isAuthenticated } = useAuth();
@@ -15,6 +16,31 @@ const Home = () => {
       navigate("/login");
     }
   };
+  const faqs = [
+    {
+      question: "What is the café pass?",
+      answer: "BrewHop is a curated café passport that lets you explore 10 cafés in your area — with 1 a free dish or drink at each.The café pass is your ticket to enjoy a free item at every partner café in your selected area for a month. Just show your pass at the café and redeem your free item!"
+    },
+    {
+      question: "How long is it valid?",
+      answer: "Your café pass is valid for 1 month from the date and time of purchase."
+    },
+    {
+      question: "What if I visit a café more than once?",
+      answer: "Each café can be claimed only once per pass. To enjoy more, you can renew your pass after it expires 30 days from the date of your purchase."
+    },
+    {
+      question: "Will new cafés be added?",
+      answer: "Yes! We regularly onboard new cafés to keep the experience fresh. Each zone may get updated lineups in future BrewHop editions."
+    }
+  ];
+  
+  const [openFaq, setOpenFaq] = useState(null);
+
+  const toggleFaq = (idx) => {
+      setOpenFaq(openFaq === idx ? null : idx);
+    };
+
   return (
     <div className="bg-[#fff8f2] text-[#3e2c1c]">
       {/* Banner Section */}
@@ -89,14 +115,35 @@ const Home = () => {
 
       {/* FAQ Section */}
       <section className="py-12 px-6 md:px-24 text-center">
-        <h2 className="text-2xl font-bold mb-6 text-center">FAQs</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 text-[#5a4633] text-sm">
-          <p>What is the café pass?</p>
-          <p>How long is it valid?</p>
-          <p>How if I visit a café more than once?</p>
-          <p>Will new cafés be added?</p>
-        </div>
-      </section>
+      <h2 className="text-2xl font-bold mb-6 text-center">FAQs</h2>
+      <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+        {faqs.map((faq, idx) => (
+          <div key={idx} className="border-b pb-3">
+            <button
+              className="w-full text-left font-semibold flex justify-between items-center py-2 focus:outline-none"
+              onClick={() => toggleFaq(idx)}
+            >
+              <span>{faq.question}</span>
+              <span className="ml-2">{openFaq === idx ? "▲" : "▼"}</span>
+            </button>
+            {openFaq === idx && (
+              <div className="text-[#5a4633] text-sm mt-2 animate-fadeIn">
+                {faq.answer}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </section>
+    <a
+      href="https://wa.me/9752055379"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="fixed bottom-6 right-6 z-50 flex items-center bg-[#25D366] text-white px-4 py-3 rounded-full shadow-lg hover:bg-[#1ebe57] transition-all group"
+      title="Chat with me on WhatsApp"
+    >
+       <FaWhatsapp size={30}/>
+    </a>
     </div>
   );
 };

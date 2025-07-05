@@ -36,7 +36,6 @@ export const signup = async (req, res) => {
   try {
     const exists = await User.findOne({ email });
     if (exists) return res.status(400).json({ msg: "Email already registered" });
-
     // Remove any previous unverified user/otp for this email
     await Otp.deleteOne({ email });
     await UnverifiedUser.deleteOne({ email });
@@ -62,7 +61,7 @@ export const signup = async (req, res) => {
       subject: "Verify Your Email Address",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h1 style="color: #f0a500;">Welcome to Cafe App!</h1>
+          <h1 style="color: #f0a500;">Welcome to Brew Hop!</h1>
           <p>Hi ${name},</p>
           <p>Thank you for signing up. Please verify your email address by entering this code:</p>
           <h2 style="background: #f8f5f0; padding: 10px; text-align: center; letter-spacing: 3px; font-size: 24px;">
@@ -77,7 +76,7 @@ export const signup = async (req, res) => {
 
     transporter.sendMail(mailOptions, function (err, info) {
       if (err) return res.status(500).json({ msg: "Failed to send verification email", error: err.message });
-      return res.status(200).json({ message: "Verification code sent to your email", email, name });
+      return res.status(200).json({ message: "Verification code sent to your email.If you don't see the email, please check your spam folder and mark it as 'Not Spam'.", email, name });
     });
   } catch (err) {
     res.status(500).json({ msg: "Signup error", error: err.message });
@@ -123,7 +122,7 @@ export const verifyEmail = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, rememberMe } = req.body;
   try {
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ msg: "Invalid credentials" });
@@ -131,7 +130,9 @@ export const login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+    // Set expiry based on rememberMe
+    const expiresIn = rememberMe ? "30d" : "7d";
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn });
     res.status(201).json({
       token,
       user: {
@@ -146,8 +147,9 @@ export const login = async (req, res) => {
   }
 };
 
+
 export const handleFirebaseUser = async (req, res) => {
-  const { token, name, email } = req.body;
+  const { token, name, email, rememberMe } = req.body; // Accept rememberMe from frontend
   if (!token) return res.status(400).json({ message: 'No token provided' });
 
   try {
@@ -164,7 +166,10 @@ export const handleFirebaseUser = async (req, res) => {
       await user.save();
     }
 
-    const jwtToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+    // Set JWT expiry based on rememberMe
+    const expiresIn = rememberMe ? "30d" : "1d";
+    const jwtToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn });
+
     res.status(200).json({
       user: {
         _id: user._id,
@@ -179,6 +184,7 @@ export const handleFirebaseUser = async (req, res) => {
     res.status(401).json({ message: 'Invalid Firebase token', error: error.message });
   }
 };
+
 
 export const getUsersByRole = async (req, res) => {
   try {

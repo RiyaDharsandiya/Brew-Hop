@@ -11,7 +11,7 @@ const ClaimButtonWithQR = ({ cafeId, user, API_URL, claimed, redeemed, disabled 
     if (claimed || redeemed || disabled) return;
     const confirm = window.confirm("Are you sure you want to claim this cafe?");
     if (!confirm) return;
-    toast.info("Claiming... This may take a few seconds. Please do not refresh the window.")
+    // toast.info("Claiming... This may take a few seconds. Please do not refresh the window.")
     setLoading(true);
     try {
       await axios.post(
