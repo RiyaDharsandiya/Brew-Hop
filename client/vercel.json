@@ -1,6 +1,6 @@
 {
     "regions": ["bom1", "sin1"],
-    "rewrites": [
+    "routes": [
         { "source": "/(.*)", "destination": "/index.html" }
       ]
   }
