@@ -11,5 +11,11 @@ export default defineConfig({
 },
 {
   "regions": ["bom1", "sin1"]
+},
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ]
 }
+
 )
