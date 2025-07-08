@@ -79,6 +79,7 @@ export const signup = async (req, res) => {
       return res.status(200).json({ message: "Verification code sent to your email.If you don't see the email, please check your spam folder and mark it as 'Not Spam'.", email, name });
     });
   } catch (err) {
+    console.log("signup",err.message);
     res.status(500).json({ msg: "Signup error", error: err.message });
   }
 };
@@ -117,6 +118,7 @@ export const verifyEmail = async (req, res) => {
       },
     });
   } catch (err) {
+    console.log("verify",err.message);
     res.status(500).json({ msg: "Verification error", error: err.message });
   }
 };
@@ -143,6 +145,7 @@ export const login = async (req, res) => {
       },
     });
   } catch (err) {
+    console.log("login",err.message);
     res.status(500).json({ msg: "Login error", error: err.message });
   }
 };
@@ -181,6 +184,7 @@ export const handleFirebaseUser = async (req, res) => {
       token: jwtToken
     });
   } catch (error) {
+    console.log("google",error.message);
     res.status(401).json({ message: 'Invalid Firebase token', error: error.message });
   }
 };

@@ -49,6 +49,7 @@ const AuthForm = () => {
       }
       loginUser(res.data.user, res.data.token, loginForm.rememberMe); 
     } catch (err) {
+      console.log("login",err.message);
       toast.error("Login failed. Please check your credentials or Sign Up if you haven't done yet");
     } finally {
       setLoading(false);
@@ -80,6 +81,7 @@ const AuthForm = () => {
         } 
       });
     } catch (err) {
+      console.log("signuo",err.message);
       toast.error(err.response?.data?.msg || "Signup failed.");
     } finally {
       setLoading(false);
@@ -103,6 +105,7 @@ const AuthForm = () => {
       loginUser(res.data.user, res.data.token, loginForm.rememberMe);
       toast.success("Google login successful!");
     } catch (err) {
+      console.log("google",err.message);
       toast.error("Google login failed. Please try again.");
     } finally {
       setLoading(false);
