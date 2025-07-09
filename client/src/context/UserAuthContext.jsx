@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createContext, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import socket from "../components/socket";
 
 const UserAuthContext = createContext();
 const API_URL = import.meta.env.VITE_API_URL;
@@ -19,10 +20,13 @@ export const UserAuthProvider = ({ children }) => {
   };
 
   // Initialize user and token from either storage
-  const [user, setUser] = useState(getStoredUser);
+  const [user, setUser] = useState(() => getStoredUser());
 
   // Accept both user object and token, and a rememberMe flag
   const loginUser = (userObj, token, rememberMe = false) => {
+    if (!socket.connected) {
+      socket.connect();
+    }    
     if (rememberMe) {
       localStorage.setItem("user", JSON.stringify(userObj));
       localStorage.setItem("token", token);
@@ -51,6 +55,7 @@ export const UserAuthProvider = ({ children }) => {
 
   // Logout clears both storages
   const logoutUser = () => {
+    socket.disconnect();
     sessionStorage.removeItem("user");
     sessionStorage.removeItem("token");
     localStorage.removeItem("user");

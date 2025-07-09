@@ -30,7 +30,7 @@ const Navbar = () => {
       <div className="hidden md:flex items-center space-x-4">
         {!isCafePage && (
           <Link to="/cafes" className="hover:text-[#f0a500] whitespace-nowrap">
-            Explore Cafes
+            Explore Gourmets
           </Link>
         )}
 

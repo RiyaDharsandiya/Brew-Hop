@@ -87,7 +87,7 @@ const ProfilePage = () => {
                 </div>
                 <div className="flex flex-wrap gap-4 mt-2">
                   <div>
-                    <span className="font-semibold text-gray-700">Beverages Remaining:</span>
+                    <span className="font-semibold text-gray-700">Brews Remaining:</span>
                     <span className="ml-1">{location.beveragesRemaining ?? 0} / 10</span>
                   </div>
                   <div>

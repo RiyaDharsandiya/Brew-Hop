@@ -3,19 +3,13 @@ import LoadingCup from "../components/LoadingCup";
 import cafeBg from "../assets/bg.jpg";
 import { useAuth } from "../context/UserAuthContext";
 import axios from "axios";
-import { io } from "socket.io-client";
 import { QRCodeCanvas } from "qrcode.react";
 import ClaimButtonWithQR from "../components/ClaimButtonWithQR";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import socket from "../components/socket";
 
 const API_URL = import.meta.env.VITE_API_URL;
-
-const socket = io(API_URL, {
-  transports: ["websocket"], // Avoid long-polling issues
-  withCredentials: true, // If you’re using cookies or auth
-});
-
 
 const CafeList = () => {
   const [loading, setLoading] = useState(true);
@@ -203,26 +197,28 @@ const planIsNotPurchased = (plan) => {
   }, [selectedLocation, cafes]);
 
   useEffect(() => {
-    socket.on("cafe-updated", () => {
-      fetchCafes();
-    });
-
-    return () => {
-      socket.off("cafe-updated");
-    };
-  }, []);
-  useEffect(() => {
-    socket.on("claim-redeemed", ({ userId }) => {
+    if (!user?._id || !socket) return;
+  
+    const handleUpdate = () => fetchCafes();
+    const handleClaim = ({ userId }) => {
       if (userId === user._id) {
-        refreshUser(); 
+        refreshUser();
         toast.info("A claim was redeemed successfully!");
       }
-    });
+    };
+  
+    if (!socket.hasListeners) {
+      socket.on("cafe-updated", handleUpdate);
+      socket.on("claim-redeemed", handleClaim);
+      socket.hasListeners = true;
+    }
   
     return () => {
-      socket.off("claim-redeemed");
+      socket.off("cafe-updated", handleUpdate);
+      socket.off("claim-redeemed", handleClaim);
+      socket.hasListeners = false;
     };
-  }, [user._id]);
+  }, [user._id]);  
   
 
   if (loading) return <LoadingCup />;
@@ -237,7 +233,7 @@ const planIsNotPurchased = (plan) => {
     <div className="z-10 p-6">
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
           <h1 className="text-3xl font-bold text-white text-center sm:text-left">
-            Explore Partner Cafés ☕
+            Explore Partner Gourmets ☕
           </h1>
           {user.role === "admin" ? (
         <button
@@ -296,7 +292,7 @@ const planIsNotPurchased = (plan) => {
       {/* Plan expired or not purchased */}
       {selectedLocation && user.role === "user" && planIsNotPurchased(plan) && (
         <div className="mb-6 p-4 bg-green-200 text-green-700 rounded text-center font-semibold">
-          You have not purchased a plan for <strong>{selectedLocation}</strong>. Please purchase to claim cafes here.
+          You have not purchased a plan for <strong>{selectedLocation}</strong>. Please purchase to claim here.
         </div>
       )}
 
@@ -308,7 +304,7 @@ const planIsNotPurchased = (plan) => {
         {/* All beverages claimed */}
         {selectedLocation && user.role === "user" && allBeveragesClaimed(plan) && (
           <div className="mb-6 p-4 bg-red-100 text-red-700 rounded text-center font-semibold">
-            You've claimed all beverages for <strong>{selectedLocation}</strong>. Please renew to get more.
+            You've claimed all brews for <strong>{selectedLocation}</strong>. Please renew to get more.
           </div>
         )}
 
@@ -407,9 +403,10 @@ const planIsNotPurchased = (plan) => {
     <ol className="list-decimal list-inside space-y-2 text-sm sm:text-base">
       <li>Redeemable only on weekdays (Monday to Friday).</li>
       <li>Redeemable only before 6pm on Weekdays.</li>
-      <li>The purchaser of the passport should only redeem.</li>
-      <li>Passport expires every 1 month from the date of purchase and time.</li>
+      <li>The purchaser of the visa should only redeem.</li>
+      <li>Visa expires every 1 month from the date of purchase and time.</li>
       <li>Merchants reserve the right to final say.</li>
+      <li>Cancellation refund not applicable.</li>
     </ol>
   </div>
 </div>

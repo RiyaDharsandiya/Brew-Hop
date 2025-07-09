@@ -8,6 +8,8 @@ import { signInWithPopup,setPersistence, browserLocalPersistence, browserSession
 import LoadingCup from "../components/LoadingCup";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { FaWhatsapp } from "react-icons/fa";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -20,6 +22,9 @@ const AuthForm = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const tab = searchParams.get("tab") || "login";
   const isLogin = tab === "login";
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [showSignupPassword, setShowSignupPassword] = useState(false);
+
 
   const handleTabChange = (isLoginTab) => {
     setSearchParams({ tab: isLoginTab ? "login" : "signup" });
@@ -37,7 +42,6 @@ const AuthForm = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      toast.success("Login successful!"); 
       const res = await axios.post(`${API_URL}/api/auth/login`, { ...loginForm });
       // Store token in localStorage if rememberMe is checked, else in sessionStorage
       if (loginForm.rememberMe) {
@@ -48,6 +52,7 @@ const AuthForm = () => {
         sessionStorage.setItem('user', JSON.stringify(res.data.user));
       }
       loginUser(res.data.user, res.data.token, loginForm.rememberMe); 
+      toast.success("Login successful!"); 
     } catch (err) {
       console.log("login",err.message);
       toast.error("Login failed. Please check your credentials or Sign Up if you haven't done yet");
@@ -204,14 +209,24 @@ const AuthForm = () => {
                 placeholder="Email address"
                 className="w-full px-4 py-2 rounded bg-white text-black border border-gray-600 focus:outline-none"
               />
-              <input
-                type="password"
-                name="password"
-                value={loginForm.password}
-                onChange={handleLoginChange}
-                placeholder="Password"
-                className="w-full px-4 py-2 rounded bg-white text-black border border-gray-600 focus:outline-none"
-              />
+              <div className="relative">
+            <input
+              type={showSignupPassword ? "text" : "password"}
+              name="password"
+              value={signupForm.password}
+              onChange={handleSignupChange}
+              placeholder="Password"
+              required
+              className="w-full px-4 py-2 rounded bg-white text-black border border-gray-600 focus:outline-none pr-10"
+            />
+            <span
+              onClick={() => setShowSignupPassword((prev) => !prev)}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-600"
+              title={showSignupPassword ? "Hide password" : "Show password"}
+            >
+              {showSignupPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
               <div className="flex items-center">
                 <input
                   type="checkbox"
@@ -258,15 +273,24 @@ const AuthForm = () => {
                 required
                 className="w-full px-4 py-2  border-gray-6 rounded bg-white text-black border border-gray-600 focus:outline-none"
               />
+             <div className="relative">
               <input
-                  type="password"
-                  name="password"
-                  value={signupForm.password}
-                  onChange={handleSignupChange}
-                  placeholder="Password"
-                  required
-                  className="w-full px-4 py-2 rounded bg-white text-black border border-gray-600 focus:outline-none"
-                />
+                type={showSignupPassword ? "text" : "password"}
+                name="password"
+                value={signupForm.password}
+                onChange={handleSignupChange}
+                placeholder="Password"
+                required
+                className="w-full px-4 py-2 rounded bg-white text-black border border-gray-600 focus:outline-none pr-10"
+              />
+              <span
+                onClick={() => setShowSignupPassword((prev) => !prev)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-600"
+                title={showSignupPassword ? "Hide password" : "Show password"}
+              >
+                {showSignupPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
                 <input
                 type="tel"
                 name="phone"
@@ -295,6 +319,15 @@ const AuthForm = () => {
           )}
         </div>
       </div>
+      <a
+      href="https://wa.me/9752055379"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="fixed bottom-6 right-6 z-50 flex items-center bg-[#25D366] text-white px-4 py-3 rounded-full shadow-lg hover:bg-[#1ebe57] transition-all group"
+      title="Chat with me on WhatsApp"
+    >
+       <FaWhatsapp size={30}/>
+    </a>
     </div>
   );
 };

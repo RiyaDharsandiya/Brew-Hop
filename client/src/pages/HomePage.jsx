@@ -18,20 +18,20 @@ const Home = () => {
   };
   const faqs = [
     {
-      question: "What is the café pass?",
-      answer: "BrewHop is a curated café passport that lets you explore 10 cafés in your area — with 1 a free dish or drink at each.The café pass is your ticket to enjoy a free item at every partner café in your selected area for a month. Just show your pass at the café and redeem your free item!"
+      question: "What is the Gourmets visa?",
+      answer: "BrewHop is a curated Gourmets visa that lets you explore 10 Gourmets in your area — with 1 a free dish or drink at each.The Gourmets visa is your ticket to enjoy a free item at every partner Gourmets in your selected area for a month. Just show your QR code at the Gourmets and redeem your free item!"
     },
     {
       question: "How long is it valid?",
-      answer: "Your café pass is valid for 1 month from the date and time of purchase."
+      answer: "Your Gourmets visa is valid for 1 month from the date and time of purchase."
     },
     {
-      question: "What if I visit a café more than once?",
-      answer: "Each café can be claimed only once per pass. To enjoy more, you can renew your pass after it expires 30 days from the date of your purchase."
+      question: "What if I visit a Gourmet more than once?",
+      answer: "Each Gourmet can be claimed only once per visa. To enjoy more, you can renew your pass after it expires 30 days from the date of your purchase."
     },
     {
-      question: "Will new cafés be added?",
-      answer: "Yes! We regularly onboard new cafés to keep the experience fresh. Each zone may get updated lineups in future BrewHop editions."
+      question: "Will new Gourmets be added?",
+      answer: "Yes! We regularly onboard new Gourmets to keep the experience fresh. Each zone may get updated lineups in future BrewHop editions."
     }
   ];
   
@@ -52,10 +52,10 @@ const Home = () => {
         />
         <div className="absolute inset-0 bg-[#00000080] flex flex-col justify-center items-start px-10 md:px-24 text-white">
           <h1 className="text-4xl md:text-5xl font-bold max-w-[600px] leading-tight mb-4">
-          Your Passport to Best Cafes — Discover, Eat, Sip, Repeat
+          Your Visa to Best Gourmets — Discover, Eat, Sip, Repeat
           </h1>
           <p className="text-lg max-w-[480px] mb-6">
-            Get a Café Discovery Pass and enjoy a free item at every café in your area for a whole month. Perfect for café lovers and explorers alike.
+            Get a Gourmets Discovery Visa and enjoy a free item at every cafes in your area for a whole month. Perfect for food lovers and explorers alike.
           </p>
           <button
             onClick={handleGetPass}
@@ -77,12 +77,12 @@ const Home = () => {
           </div>
           <div>
             <div className="text-3xl mb-4">🎫</div>
-            <h3 className="font-semibold text-lg mb-1">Get a café discovery pass</h3>
+            <h3 className="font-semibold text-lg mb-1">Get a food discovery visa</h3>
             <p className="text-sm">with 10 free items</p>
           </div>
           <div>
             <div className="text-3xl mb-4">🧍‍♂️➡️☕</div>
-            <h3 className="font-semibold text-lg mb-1">Hop from café to café</h3>
+            <h3 className="font-semibold text-lg mb-1">Hop from best to best</h3>
             <p className="text-sm">and enjoy!</p>
           </div>
         </div>
@@ -90,18 +90,18 @@ const Home = () => {
 
       {/* Why Choose Section */}
       <section className="py-12 px-6 md:px-24 text-center">
-        <h2 className="text-2xl font-bold mb-10">WHY CHOOSE OUR PASS?</h2>
+        <h2 className="text-2xl font-bold mb-10">WHY CHOOSE OUR Visa?</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8  text-[#5a4633]">
           <div>
             <p className="font-semibold text-lg mb-1">☕ Sip, Save, and Support</p>
-            <p className="text-sm">More Cafés, More Memories</p>
+            <p className="text-sm">More Pictures, More Memories</p>
           </div>
           <div>
             <p className="font-semibold text-lg mb-1">🌍 Be a Regular Everywhere</p>
             <p className="text-sm">Taste the City, Not Just the Chain</p>
           </div>
           <div>
-            <p className="font-semibold text-lg mb-1">💰 Try 10 Cafés for the Price of One</p>
+            <p className="font-semibold text-lg mb-1">💰 Try 10 Gourmets for the Price of One</p>
             <p className="text-sm">More Choices, More memories, More Fun</p>
           </div> 
     
@@ -109,7 +109,7 @@ const Home = () => {
       </section>
 
       <section className="py-8 px-6 bg-[#fff0e0]">
-        <h2 className="text-xl font-bold mb-6 text-center">Our Café Partners</h2>
+        <h2 className="text-xl font-bold mb-6 text-center">Our Gourmets Partners</h2>
         <AutoScrollCafes />
       </section>
 
