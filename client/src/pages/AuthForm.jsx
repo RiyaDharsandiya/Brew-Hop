@@ -134,11 +134,6 @@ const AuthForm = () => {
     }
   };
   
-  useEffect(() => {
-    const tab = searchParams.get("tab") || "login";
-    setIsLogin(tab === "login");
-  }, [searchParams]);
-
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-[#f8f5f0] px-4">
       {loading && (
