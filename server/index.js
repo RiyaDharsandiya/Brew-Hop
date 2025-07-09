@@ -12,6 +12,14 @@ connectDB();
 const app = express();
 const server = http.createServer(app);
 
+app.use(cors({
+  origin: process.env.CLIENT_URL,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
+}));
+
+app.use(express.json());
+
 const io = new Server(server, {
   cors: {
     origin: process.env.CLIENT_URL,
@@ -22,12 +30,7 @@ const io = new Server(server, {
 
 app.set("io", io);
 
-app.use(express.json());
-app.use(cors({
-  origin: process.env.CLIENT_URL,
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-}));
+
 
 app.get("/", (req, res) => {
   res.send("Hello from the Café Server!");

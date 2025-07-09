@@ -14,7 +14,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 const AuthForm = () => {
   const navigate = useNavigate();
   const { loginUser } = useAuth();
-  const [loginForm, setLoginForm] = useState({ email: "", password: "" });
+  const [loginForm, setLoginForm] = useState({ email: "", password: "" ,rememberMe: false});
   const [signupForm, setSignupForm] = useState({ name: "", email: "", password: "" ,phone:""});
   const [loading, setLoading] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -92,20 +92,42 @@ const AuthForm = () => {
   const handleGoogleSignIn = async () => {
     setLoading(true);
     try {
-      await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
+      // Step 1: Set Firebase auth persistence based on rememberMe
+      await setPersistence(
+        auth,
+        loginForm.rememberMe
+          ? browserLocalPersistence
+          : browserSessionPersistence
+      );
+  
+      // Step 2: Firebase popup
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
       const idToken = await user.getIdToken();
+  
+      // Step 3: Send token to backend
       const res = await axios.post(`${API_URL}/api/auth/firebase`, {
         token: idToken,
         name: user.displayName,
         email: user.email,
-        rememberMe: loginForm.rememberMe 
+        rememberMe: loginForm.rememberMe,
       });
+  
+      // Step 4: Save token + user to storage (based on rememberMe)
+      if (loginForm.rememberMe) {
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+      } else {
+        sessionStorage.setItem("token", res.data.token);
+        sessionStorage.setItem("user", JSON.stringify(res.data.user));
+      }
+  
+      // Step 5: Call loginUser context function
       loginUser(res.data.user, res.data.token, loginForm.rememberMe);
+  
       toast.success("Google login successful!");
     } catch (err) {
-      console.log("google",err.message);
+      console.error("Google Login Error:", err.message);
       toast.error("Google login failed. Please try again.");
     } finally {
       setLoading(false);
