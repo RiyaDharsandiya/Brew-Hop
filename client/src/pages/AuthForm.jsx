@@ -19,12 +19,12 @@ const AuthForm = () => {
   const [loading, setLoading] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const tab = searchParams.get("tab") || "login";
-  const [isLogin, setIsLogin] = useState(tab === "login");
+  const isLogin = tab === "login";
 
   const handleTabChange = (isLoginTab) => {
-    setIsLogin(isLoginTab);
     setSearchParams({ tab: isLoginTab ? "login" : "signup" });
   };
+  
 
   const handleLoginChange = (e) => {
     setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
@@ -138,7 +138,7 @@ const AuthForm = () => {
     const tab = searchParams.get("tab") || "login";
     setIsLogin(tab === "login");
   }, [searchParams]);
-  
+
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-[#f8f5f0] px-4">
       {loading && (
