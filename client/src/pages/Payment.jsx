@@ -11,7 +11,7 @@ const Payment = () => {
   const { user, refreshUser } = useAuth();
   const navigate = useNavigate();
 
-  const basePrice = 1999;
+  const basePrice = 5;
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
   const [couponApplied, setCouponApplied] = useState(false);
