@@ -30,11 +30,10 @@ const io = new Server(server, {
 
 app.set("io", io);
 
-
-
-app.get("/", (req, res) => {
-  res.send("Hello from the Café Server!");
+app.get("/health", (req, res) => {
+  res.status(200).send("✅ Server is up and running!");
 });
+
 
 app.use("/api/auth", authRoutes);
 app.use("/api/cafes", cafeRoute);
