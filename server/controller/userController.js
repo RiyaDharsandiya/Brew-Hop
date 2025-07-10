@@ -157,9 +157,7 @@ export const handleFirebaseUser = async (req, res) => {
 
   try {
     const { token } = req.body;
-    console.log("Received Firebase token:", token);
     const decodedToken = await admin.auth().verifyIdToken(token);
-    console.log("Received Firebase token:", decodedToken);
     const { uid } = decodedToken;
 
     if (!email) return res.status(400).json({ message: 'No email in token' });
