@@ -52,7 +52,7 @@ const Home = () => {
         />
         <div className="absolute inset-0 bg-[#00000080] flex flex-col justify-center items-start px-10 md:px-24 text-white">
           <h1 className="text-4xl md:text-5xl font-bold max-w-[600px] leading-tight mb-4">
-          Your Visa to Best Gourmets — Discover, Eat, Sip, Repeat
+          Your Visa to curated culinary experiences — Discover, Eat, Sip, Repeat
           </h1>
           <p className="text-lg max-w-[480px] mb-6">
             Get a Gourmets Discovery Visa and enjoy a free item at every cafes in your area for a whole month. Perfect for food lovers and explorers alike.
