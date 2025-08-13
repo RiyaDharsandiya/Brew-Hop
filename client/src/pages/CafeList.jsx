@@ -402,7 +402,7 @@ const planIsNotPurchased = (plan) => {
     <h3 className="text-xl font-semibold mb-4">Terms and Conditions:</h3>
     <ol className="list-decimal list-inside space-y-2 text-sm sm:text-base">
       <li>Redeemable only on weekdays (Monday to Friday).</li>
-      <li>Redeemable only before 6pm on Weekdays.</li>
+      {/* <li>Redeemable only before 6pm on Weekdays.</li> */}
       <li>The purchaser of the visa should only redeem.</li>
       <li>Visa expires every 1 month from the date of purchase and time.</li>
       <li>Merchants reserve the right to final say.</li>
