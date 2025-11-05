@@ -12,6 +12,7 @@ const CafeQRVerifier = ({ API_URL, token }) => {
   const [loading, setLoading] = useState(false);
   const qrRef = useRef(null);
   const { refreshUser } = useAuth();
+  const [amount, setAmount] = useState("");
 
   const scannerRef = useRef(null);
 
@@ -55,34 +56,37 @@ useEffect(() => {
   };
 }, []);
 
-  const handleVerify = async () => {
-    if (!claimCode) {
-      toast.error("Please enter or scan a claim code.");
-      return;
-    }
-    setLoading(true);
-    try {
-      const res = await axios.get(`${API_URL}/api/auth/verify/${claimCode}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+const handleVerify = async () => {
+  if (!claimCode || !amount) {
+    toast.error("Both claim code and amount are required.");
+    return;
+  }
+  setLoading(true);
+  try {
+    const res = await axios.post(`${API_URL}/api/auth/verify-claim`, {
+      claimCode,
+      amount: Number(amount),
+    }, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-      setResult({
-        success: true,
-        user: res.data.user,
-        message: res.data.message,
-      });
-      toast.success("Verification successful!");
-      await refreshUser();
-    } catch (err) {
-      setResult({
-        success: false,
-        message: err.response?.data?.msg || "Verification failed",
-      });
-      toast.error(err.response?.data?.msg || "Verification failed");
-    } finally {
-      setLoading(false);
-    }
-  };
+    setResult({
+      success: true,
+      user: res.data.user,
+      message: res.data.message,
+    });
+    toast.success("Verification successful!");
+    await refreshUser();
+  } catch (err) {
+    setResult({
+      success: false,
+      message: err.response?.data?.msg || "Verification failed",
+    });
+    toast.error(err.response?.data?.msg || "Verification failed");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="p-6 bg-white rounded shadow-md max-w-md mx-auto mt-10 relative">
@@ -105,6 +109,14 @@ useEffect(() => {
         placeholder="Enter Claim Code (from QR)"
         value={claimCode}
         onChange={(e) => setClaimCode(e.target.value)}
+        className="w-full border p-2 rounded mb-3"
+        disabled={loading}
+      />
+      <input
+        type="number"
+        placeholder="Enter Amount"
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
         className="w-full border p-2 rounded mb-3"
         disabled={loading}
       />

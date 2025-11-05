@@ -14,12 +14,18 @@ const cafeSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    timeFrom: { type: String },  
+    timeTo: { type: String },    
+    menuLink: { type: String },
+    comments: { type: String, default: "" },
+    bgImage: { type: String },
     claimedBy: [
       {
         user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
         claimedAt: { type: Date, default: Date.now },
         claimCode: { type: String },
         redeemed: { type: Boolean, default: false },
+        amount:{ type: Number,required:true}
       }    
     ],
   },

@@ -293,9 +293,13 @@ export const generateQRData = async (req, res) => {
 
 export const verifyClaimCode = async (req, res) => {
   try {
-    const { claimCode } = req.params;
+    const { claimCode, amount } = req.body;
 
-    // Find the user who has the claim code inside any paidLocation's claimedCafes
+    if (!amount || isNaN(amount)) {
+      return res.status(400).json({ msg: "Amount is required and must be a number." });
+    }
+
+    // rest of the code remains—
     const user = await User.findOne({
       "paidLocations.claimedCafes.claimCode": claimCode,
     });
@@ -305,7 +309,6 @@ export const verifyClaimCode = async (req, res) => {
     let claimedEntry = null;
     let locationObj = null;
 
-    // Loop to locate the specific claimed entry and its parent location object
     for (const loc of user.paidLocations) {
       claimedEntry = loc.claimedCafes.find((c) => c.claimCode === claimCode);
       if (claimedEntry) {
@@ -321,14 +324,15 @@ export const verifyClaimCode = async (req, res) => {
     if (!cafe) return res.status(404).json({ msg: "Café not found." });
     if (String(cafe.assignedTo) !== String(req.user.id)) return res.status(403).json({ msg: "Unauthorized." });
 
-    // Mark claim as redeemed
+    // Set amount (NEW)
+    claimedEntry.amount = amount;
     claimedEntry.redeemed = true;
     await user.save();
 
-    // Update redeemed status in the cafe's claimedBy array
+    // Update claimedBy array with amount and redeemed status
     await Cafe.updateOne(
       { _id: claimedEntry.cafe, "claimedBy.user": user._id },
-      { $set: { "claimedBy.$.redeemed": true } }
+      { $set: { "claimedBy.$.redeemed": true, "claimedBy.$.amount": amount } }
     );
 
     req.app.get("io").emit("claim-redeemed", {
@@ -346,4 +350,5 @@ export const verifyClaimCode = async (req, res) => {
     res.status(500).json({ msg: "Server error", error: err.message });
   }
 };
+
 

@@ -1,22 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
-import cafe1 from '../assets/cafes/cafe1.jpg';
-import cafe2 from '../assets/cafes/cafe2.jpeg';
-import cafe3 from '../assets/cafes/cafe3.jpeg';
-import cafe4 from '../assets/cafes/cafe4.jpeg';
-import cafe5 from '../assets/cafes/cafe5.jpeg';
-import cafe6 from '../assets/cafes/cafe6.jpeg';
-import cafe7 from '../assets/cafes/cafe7.jpeg';
-import cafe8 from '../assets/cafes/cafe8.jpeg';
+import cafe1 from '../assets/cafes/145 Andheri.jpeg';
+import cafe2 from '../assets/cafes/Berlin brew The Beer Library.jpeg';
+import cafe3 from '../assets/cafes/Berlin Brew.jpeg';
+import cafe4 from '../assets/cafes/Boho.jpeg';
+import cafe5 from '../assets/cafes/Bombay Cocktail Bar.jpeg';
+import cafe6 from '../assets/cafes/Ebony Casual Diner.jpeg';
+import cafe7 from '../assets/cafes/Tango tamari.jpeg';
+
 
 const cafePartners = [
-    { name: "Blue Tokai", image: cafe1 },
-    { name: "Starbucks", image: cafe2 },
-    { name: "Third Wave", image: cafe3 },
-    { name: "Subko", image: cafe4 },
-    { name: "Koinonia", image: cafe5 },
-    { name: "Brewberrys", image: cafe6 },
-    { name: "Café Coffee Day", image: cafe7 },
-    { name: "Nook", image: cafe8 },
+    { name: "145 Andheri", image: cafe1 },
+    { name: "Berlin brew The Beer Library", image: cafe2 },
+    { name: "Berlin Brew", image: cafe3 },
+    { name: "Boho", image: cafe4 },
+    { name: "Bombay Cocktail Bar", image: cafe5 },
+    { name: "Ebony Casual Diner", image: cafe6 },
+    { name: "Tango tamari", image: cafe7 },
   ];
   
 

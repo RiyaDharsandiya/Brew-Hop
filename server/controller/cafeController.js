@@ -9,21 +9,25 @@ export const getAllCafes = async (req, res) => {
     }
   };
   
-  
   export const addCafe = async (req, res) => {
     try {
-      const { name, address, location, assignedTo } = req.body;
+      const { name, address, location, assignedTo, timeFrom, timeTo, menuLink, comments, bgImage } = req.body;
   
       if (!name || !address || !location || !assignedTo) {
-        return res.status(400).json({ msg: "All fields are required." });
+        return res.status(400).json({ msg: "All required fields are required." });
       }
   
       const newCafe = new Cafe({
         name,
         address,
         location,
-        createdBy: req.user.id, // admin ID
-        assignedTo,             // café owner's user ID
+        createdBy: req.user.id,
+        assignedTo,
+        timeFrom,
+        timeTo,
+        menuLink,
+        comments,
+        bgImage 
       });
   
       await newCafe.save();
@@ -36,24 +40,18 @@ export const getAllCafes = async (req, res) => {
       console.error("Error adding cafe:", err.message);
       res.status(500).json({ msg: "Server Error" });
     }
-  };  
-  
-export const getCafeById = async (req, res) => {
-    try {
-      const cafe = await Cafe.findById(req.params.id);
-      if (!cafe) return res.status(404).json({ msg: "Cafe not found" });
-      res.json(cafe);
-    } catch (err) {
-      res.status(500).json({ msg: "Server error" });
-    }
   };
+  
   
   export const updateCafe = async (req, res) => {
     try {
-      const { name, address, location } = req.body;
+      const { name, address, location, timeFrom, timeTo, menuLink, comments, bgImage } = req.body;
+  
+      const updateData = { name, address, location, timeFrom, timeTo, menuLink, comments, bgImage }; 
+  
       const cafe = await Cafe.findByIdAndUpdate(
         req.params.id,
-        { name, address, location },
+        updateData,
         { new: true }
       );
   
@@ -70,6 +68,16 @@ export const getCafeById = async (req, res) => {
   
   
   
+export const getCafeById = async (req, res) => {
+    try {
+      const cafe = await Cafe.findById(req.params.id);
+      if (!cafe) return res.status(404).json({ msg: "Cafe not found" });
+      res.json(cafe);
+    } catch (err) {
+      res.status(500).json({ msg: "Server error" });
+    }
+  };
+    
   export const deleteCafe = async (req, res) => {
     try {
       const cafe = await Cafe.findByIdAndDelete(req.params.id);

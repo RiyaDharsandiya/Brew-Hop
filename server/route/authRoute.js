@@ -12,7 +12,8 @@ router.get("/", requireAuth, getUsersByRole);
 router.get("/me", requireAuth, getCurrentUser);
 //cafe
 router.post("/claim-cafe", requireAuth, claimCafe);
-// 👤 User: Generates data to be embedded in QR
+
+// User: Generates data to be embedded in QR
 router.get("/qr/:claimCode", generateQRData);
 
 // ☕ Cafe owner: Verifies QR claim (only if owner)
