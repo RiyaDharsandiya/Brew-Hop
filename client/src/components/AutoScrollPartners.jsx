@@ -5,7 +5,7 @@ import cafe3 from '../assets/cafes/Berlin Brew.jpeg';
 import cafe4 from '../assets/cafes/Boho.jpeg';
 import cafe5 from '../assets/cafes/Bombay Cocktail Bar.jpeg';
 import cafe6 from '../assets/cafes/Ebony Casual Diner.jpeg';
-import cafe7 from '../assets/cafes/Tango tamari.jpeg';
+
 
 
 const cafePartners = [
@@ -15,7 +15,6 @@ const cafePartners = [
     { name: "Boho", image: cafe4 },
     { name: "Bombay Cocktail Bar", image: cafe5 },
     { name: "Ebony Casual Diner", image: cafe6 },
-    { name: "Tango tamari", image: cafe7 },
   ];
   
 
