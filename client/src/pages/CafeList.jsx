@@ -710,6 +710,7 @@ const planIsNotPurchased = (plan) => {
     <h3 className="text-xl font-semibold mb-4">Terms and Conditions:</h3>
     <ol className="list-decimal list-inside space-y-2 text-sm sm:text-base">
     <li>A table of guests can avail only 2 freebie offer in 24 hours. The restaurant holds the right to deny any extra offers to the same table</li>
+    <li>Visa expires in 1 month from the date of purchase and time, purchaser should only redeem</li>
     <li>The choice of brand provided as part of this promotion is solely at the discretion of the restaurant</li>
     <li>You should be above the legal drinking age for complimentary drink(s)</li>
     <li>You will be eligible for complimentary item(s) equivalent to either the actual guests at the table or lower of the seats booked</li>
