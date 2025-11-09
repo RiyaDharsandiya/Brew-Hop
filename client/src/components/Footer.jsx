@@ -1,7 +1,7 @@
 const Footer = () => {
     return (
       <footer className="bg-[#3e2c1c] text-white text-center py-4">
-        <p>Created by Brew Hop © 2025 All rights reserved</p>
+        <p>Brew Hop © 2025 All rights reserved</p>
       </footer>
     );
   };
