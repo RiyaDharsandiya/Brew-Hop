@@ -25,7 +25,7 @@ const cafeSchema = new mongoose.Schema(
         claimedAt: { type: Date, default: Date.now },
         claimCode: { type: String },
         redeemed: { type: Boolean, default: false },
-        amount:{ type: Number,required:true}
+        amount:{ type: Number}
       }    
     ],
   },

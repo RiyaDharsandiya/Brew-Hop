@@ -1,20 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
-import cafe1 from '../assets/cafes/145 Andheri.jpeg';
+import cafe1 from '../assets/cafes/whats your bahana.jpeg';
 import cafe2 from '../assets/cafes/Berlin brew The Beer Library.jpeg';
 import cafe3 from '../assets/cafes/Berlin Brew.jpeg';
 import cafe4 from '../assets/cafes/Boho.jpeg';
 import cafe5 from '../assets/cafes/Bombay Cocktail Bar.jpeg';
 import cafe6 from '../assets/cafes/Ebony Casual Diner.jpeg';
-
+import cafe7 from '../assets/cafes/one o one.jpg'
 
 
 const cafePartners = [
-    { name: "145 Andheri", image: cafe1 },
+    { name: "What's your bahana?", image: cafe1 },
     { name: "Berlin brew The Beer Library", image: cafe2 },
     { name: "Berlin Brew", image: cafe3 },
     { name: "Boho", image: cafe4 },
     { name: "Bombay Cocktail Bar", image: cafe5 },
     { name: "Ebony Casual Diner", image: cafe6 },
+    { name: "One 'o' one", image: cafe7 },
   ];
   
 
