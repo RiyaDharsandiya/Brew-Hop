@@ -406,7 +406,7 @@ const planIsNotPurchased = (plan) => {
           onChange={(e) => setSelectedLocation(e.target.value)}
           className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#f0a500] text-gray-700 text-base sm:text-lg"
         >
-          <option value="">All Locations</option>
+          <option value="">Filter Locations</option>
           {locations.map((loc) => (
             <option key={loc} value={loc}>
               {loc}
@@ -542,10 +542,6 @@ const planIsNotPurchased = (plan) => {
     </div>
   ))}
 </div>
-
-
-
-
 
         {filteredCafes.length === 0 && selectedLocation && (
           <p className="text-center text-white mt-8">No cafés found in {selectedLocation}</p>
@@ -706,22 +702,25 @@ const planIsNotPurchased = (plan) => {
   </div>
 )}
 
-     <div className="relative z-10 max-w-2xl mx-auto mt-12 mb-8 p-3 bg-white bg-opacity-90 rounded-lg shadow-md text-gray-800">
+{selectedLocation && (
+  <div className="relative z-10 max-w-2xl mx-auto mt-12 mb-8 p-3 bg-white bg-opacity-90 rounded-lg shadow-md text-gray-800">
     <h3 className="text-xl font-semibold mb-4">Terms and Conditions:</h3>
     <ol className="list-decimal list-inside space-y-2 text-sm sm:text-base">
-    <li>A table of guests can avail only 2 freebie offer in 24 hours. The restaurant holds the right to deny any extra offers to the same table</li>
-    <li>Visa expires in 1 month from the date of purchase and time, purchaser should only redeem</li>
-    <li>The choice of brand provided as part of this promotion is solely at the discretion of the restaurant</li>
-    <li>You should be above the legal drinking age for complimentary drink(s)</li>
-    <li>You will be eligible for complimentary item(s) equivalent to either the actual guests at the table or lower of the seats booked</li>
-    <li>You can only avail 1 offer per table.</li>
-    <li>The restaurant partner can deny you the offer in case you fail to carry a valid ID card</li>
-    <li>This offer may not apply to bottled drinks, buffets, pre-discounted platters/combos/thalis, select seasonal or seafood items, tobacco products, or special menus at the restaurant's discretion</li>
-    <li>Brewhop has no role to play on taxes and charges levied by the Government and restaurants</li>
-    <li>Additional service charge on the bill is up to restaurant's discretion</li>
-    <li>Other T&Cs may apply</li>
-</ol>
+      <li>A table of guests can avail only 2 freebie offer in 24 hours. The restaurant holds the right to deny any extra offers to the same table</li>
+      <li>Visa expires in 1 month from the date of purchase and time, purchaser should only redeem</li>
+      <li>The choice of brand provided as part of this promotion is solely at the discretion of the restaurant</li>
+      <li>You should be above the legal drinking age for complimentary drink(s)</li>
+      <li>You will be eligible for complimentary item(s) equivalent to either the actual guests at the table or lower of the seats booked</li>
+      <li>You can only avail 1 offer per table.</li>
+      <li>The restaurant partner can deny you the offer in case you fail to carry a valid ID card</li>
+      <li>This offer may not apply to bottled drinks, buffets, pre-discounted platters/combos/thalis, select seasonal or seafood items, tobacco products, or special menus at the restaurant's discretion</li>
+      <li>Brewhop has no role to play on taxes and charges levied by the Government and restaurants</li>
+      <li>Additional service charge on the bill is up to restaurant's discretion</li>
+      <li>Other T&Cs may apply</li>
+    </ol>
   </div>
+)}
+
   {modalOpen && <AdminReferralCodeForm onClose={() => setmodalOpen(false)} />}
 </div>
   );

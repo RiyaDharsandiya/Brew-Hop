@@ -18,7 +18,7 @@ const Home = () => {
   };
   const faqs = [
     {
-      question: "What visa?",
+      question: "What is visa?",
       answer: "BrewHop has a curated Outlet visa that lets you explore 10 places in your area — with 1 a complimentary dish/beverage at each. The visa is your ticket to enjoy at every partner Outlet in your selected area for a month. Just show your QR code at the Outlet and redeem your complimentary item!"
     },
     {
@@ -26,11 +26,11 @@ const Home = () => {
       answer: "Your visa is valid for 1 month from the date and time of purchase. Check your profile to know more."
     },
     {
-      question: "What if I visit a Outlet more than once?",
+      question: "What if I visit an outlet more than once?",
       answer: "Each Outlet can be claimed only once per visa. To enjoy more, you can renew your subscription after it expires 30 days from the date of your purchase."
     },
     {
-      question: "Will new Outlet be added?",
+      question: "Will new outlets be added?",
       answer: "Yes! We regularly onboard new Outlet to keep the experience fresh. Each zone may get updated lineups in future BrewHop editions."
     }
   ];

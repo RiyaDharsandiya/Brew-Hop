@@ -127,7 +127,7 @@ const Payment = () => {
           </div>
           
           <h2 className="text-2xl font-bold text-[#a8741a] mb-1">Buy Café Passport</h2>
-          <p className="text-gray-600 text-center">Get access to 10 items/dishes at partner cafés in <span className="font-semibold text-[#a8741a]">{selectedLocation || "..."}</span></p>
+          <p className="text-gray-600 text-center">Get access to 10 dishe/beverage at partner cafés in <span className="font-semibold text-[#a8741a]">{selectedLocation || "..."}</span></p>
         </div>
 
         <div className="border border-[#f6e7c1] rounded-xl p-5 bg-white/80 mb-6 space-y-3 shadow">
