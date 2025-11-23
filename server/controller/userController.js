@@ -294,7 +294,7 @@ export const generateQRData = async (req, res) => {
 export const verifyClaimCode = async (req, res) => {
   try {
     const { claimCode, amount } = req.body;
-
+    console.log("Received body:", req.body);
     if (!amount || isNaN(amount)) {
       return res.status(400).json({ msg: "Amount is required and must be a number." });
     }

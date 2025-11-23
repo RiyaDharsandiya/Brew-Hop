@@ -17,5 +17,5 @@ router.post("/claim-cafe", requireAuth, claimCafe);
 router.get("/qr/:claimCode", generateQRData);
 
 // ☕ Cafe owner: Verifies QR claim (only if owner)
-router.get("/verify/:claimCode", requireAuth, verifyClaimCode);
+router.post("/verify-claim", requireAuth, verifyClaimCode);
 export default router;

@@ -62,6 +62,7 @@ const handleVerify = async () => {
     return;
   }
   setLoading(true);
+  console.log("Sending:", { claimCode, amount: Number(amount) });
   try {
     const res = await axios.post(`${API_URL}/api/auth/verify-claim`, {
       claimCode,
