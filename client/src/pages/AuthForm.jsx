@@ -86,7 +86,7 @@ const AuthForm = () => {
         } 
       });
     } catch (err) {
-      console.log("signuo",err.message);
+      console.log("signup error:", err.message, err.response?.data);
       toast.error(err.response?.data?.msg || "Signup failed.");
     } finally {
       setLoading(false);
